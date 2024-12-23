@@ -1,0 +1,9 @@
+{
+  "import": [
+    "peter-jerry-ye/utils/codec",
+    "moonbitlang/x/crypto"
+  ],
+  "wbtest-import": [
+    "moonbitlang/x/encoding"
+  ]
+}
