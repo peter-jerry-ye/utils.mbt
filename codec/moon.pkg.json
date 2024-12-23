@@ -1,0 +1,5 @@
+{
+  "wbtest-import": [
+    "moonbitlang/x/encoding"
+  ]
+}
