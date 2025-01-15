@@ -67,9 +67,9 @@ pub fn Base64Encoder::new() -> Base64Encoder {
 }
 
 ///|
-pub fn encode(
+pub fn encode[T : ByteSequence](
   self : Base64Encoder,
-  bytes : Iter[Byte],
+  bytes : T,
   url_safe~ : Bool = false,
   padding~ : Bool = false
 ) -> Array[Char] {
@@ -114,18 +114,8 @@ pub fn encode(
   result
 }
 
-///|
-pub(open) trait Bytes_ {
-  iter(Self) -> Iter[Byte]
-}
-
-///|
-pub(open) trait Chars {
-  iter(Self) -> Iter[Char]
-}
-
 ///| Encode binary to ascii text following Base64 defined in RFC 4648
-pub fn base64_encode[T : Bytes_](
+pub fn base64_encode[T : ByteSequence](
   bytes : Iter[T],
   url_safe~ : Bool = false
 ) -> Iter[Char] {
@@ -138,7 +128,7 @@ pub fn base64_encode[T : Bytes_](
         }
       }
     } else {
-      for ch in state.encode(Iter::empty(), url_safe~, padding=true) {
+      for ch in state.encode(&ByteSequence::empty(), url_safe~, padding=true) {
         if f(ch) == IterEnd {
           return IterEnd
         }
@@ -161,9 +151,9 @@ pub fn Base64Decoder::new() -> Base64Decoder {
 }
 
 ///|
-pub fn decode(
+pub fn decode[T : CharSequence](
   self : Base64Decoder,
-  input : Iter[Char],
+  input : T,
   url_safe~ : Bool = false
 ) -> Array[Byte] {
   let result = []
@@ -203,7 +193,7 @@ pub fn decode(
 /// Decode ascii text to binary following Base64 defined in RFC 4648
 ///
 /// If the string is not padded correctly, an empty `Bytes` will be returned
-pub fn base64_decode[T : Chars](
+pub fn base64_decode[T : CharSequence](
   input : Iter[T],
   url_safe~ : Bool = false
 ) -> Iter[Byte] {

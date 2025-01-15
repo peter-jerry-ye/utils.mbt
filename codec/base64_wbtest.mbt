@@ -16,10 +16,11 @@ test "base64 encode" {
 
 test "base64 decode" {
   fn test_str!(expected : String, input : String) {
-    @encoding.decode_strict(
-      UTF8,
-      [input].iter() |> base64_decode |> Bytes::from_iter,
-    ).to_string!()
+    let buffer = @buffer.new()
+    [input].iter()
+    |> base64_decode
+    |> Iter::each(fn(b) { buffer.write_byte(b) })
+    @encoding.decode_strict(UTF8, buffer.contents()).to_string!()
     |> inspect!(content=expected)
   }
 
