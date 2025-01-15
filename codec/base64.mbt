@@ -67,7 +67,7 @@ pub fn Base64Encoder::new() -> Base64Encoder {
 }
 
 ///|
-pub fn encode[T : ByteSequence](
+pub fn Base64Encoder::encode[T : ByteSequence](
   self : Base64Encoder,
   bytes : T,
   url_safe~ : Bool = false,
@@ -151,7 +151,7 @@ pub fn Base64Decoder::new() -> Base64Decoder {
 }
 
 ///|
-pub fn decode[T : CharSequence](
+pub fn Base64Decoder::decode[T : CharSequence](
   self : Base64Decoder,
   input : T,
   url_safe~ : Bool = false
