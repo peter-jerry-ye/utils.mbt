@@ -254,7 +254,7 @@ test "variable length encoding" {
 ///|
 pub fn oid_to_bytes(tree : Array[Int]) -> Bytes {
   let buffer = @buffer.new()
-  guard let [first, second, .. as rest] = tree
+  guard let [first, second, .. rest] = tree
   buffer.write_byte((first * 40 + second).to_byte())
   for value in rest {
     variable_length_encoding(buffer, value.reinterpret_as_uint())
@@ -447,7 +447,7 @@ test "decode pem file" {
     #|uOuIr6NHfdgGBgOTeucG+mPtADsLYurEQuUlfkl5hR7LgwF+3q8bHQ==
   guard let [sequence] = (key.split("\n")
     |> @codec.base64_decode
-    |> from_iter
+    |> X690::from_iter
     |> Iter::collect)
   guard let [
     version,
@@ -460,7 +460,7 @@ test "decode pem file" {
     exponent2,
     coefficient,
   ] = (sequence.content.iter()
-    |> from_iter
+    |> X690::from_iter
     |> Iter::map(fn {
       { tag: Integer, construction: Primitive, class: Universal, content } =>
         BigInt::from_octets(content)

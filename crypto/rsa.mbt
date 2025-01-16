@@ -123,12 +123,11 @@ fn emsa_pkcs1_v1_5(
   if emLen < tLen + 11 {
     abort("intended encoded message length too short")
   }
-  let ps = Bytes::make(emLen - tLen - 3, b'\xff')
-  let em = Bytes::new(emLen)
+  let ps = FixedArray::make(emLen - tLen - 3, b'\xff')
+  let em = FixedArray::make(emLen, b'\x00')
   em[0] = b'\x00'
   em[1] = b'\x01'
-  em.blit(2, ps, 0, emLen - tLen - 3)
-  em.blit(emLen - tLen, t, 0, tLen)
-  em
+  ps.blit_to(em, len=emLen - tLen - 3, dst_offset=2)
+  em.blit_from_bytes(emLen - tLen, t, 0, tLen)
+  Bytes::from_fixedarray(em)
 }
-
