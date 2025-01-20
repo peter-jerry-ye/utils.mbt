@@ -212,7 +212,7 @@ priv enum State {
 }
 
 ///|
-fn variable_length_encoding(buffer : @buffer.Buffer, number : UInt) -> Unit {
+fn variable_length_encoding(buffer : @buffer.T, number : UInt) -> Unit {
   let number = number
   let len = 32 - number.clz()
   let mod = len % 7

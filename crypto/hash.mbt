@@ -41,9 +41,9 @@ pub fn oid_with_rsa_encryption(self : HashAlgorithm) -> Array[Int] {
 ///|
 pub fn hash(self : HashAlgorithm, input : Iter[Byte]) -> Bytes {
   match self {
-    MD5 => @crypto.md5(Bytes::from_iter(input))
-    SHA224 => @crypto.sha224_from_iter(input)
-    SHA256 => @crypto.sha256_from_iter(input)
+    MD5 => @crypto.md5(FixedArray::from_iter(input)) |> Bytes::from_fixedarray
+    SHA224 => @crypto.sha224_from_iter(input) |> Bytes::from_fixedarray
+    SHA256 => @crypto.sha256_from_iter(input) |> Bytes::from_fixedarray
   }
 }
 
