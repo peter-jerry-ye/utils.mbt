@@ -232,6 +232,7 @@ fn variable_length_encoding(buffer : @buffer.T, number : UInt) -> Unit {
   }
 }
 
+///|
 test "variable length encoding" {
   let buffer = @buffer.new()
   variable_length_encoding(buffer, 311)
@@ -254,7 +255,7 @@ test "variable length encoding" {
 ///|
 pub fn oid_to_bytes(tree : Array[Int]) -> Bytes {
   let buffer = @buffer.new()
-  guard let [first, second, .. rest] = tree
+  guard tree is [first, second, .. rest]
   buffer.write_byte((first * 40 + second).to_byte())
   for value in rest {
     variable_length_encoding(buffer, value.reinterpret_as_uint())
@@ -298,6 +299,7 @@ pub fn to_bytes(self : X690) -> Bytes {
   buffer.to_bytes()
 }
 
+///|
 test "OID and x690 to bytes" {
   let pkcs_1 = X690::{
     tag: ObjectIdentifier,
@@ -417,6 +419,7 @@ pub fn X690::from_iter(bytes : Iter[Byte]) -> Iter[X690] {
   })
 }
 
+///|
 test "decode pem file" {
   // Copied from https://www.hanselman.com/blog/decoding-an-ssh-key-from-pem-to-base64-to-hex-to-asn1-to-prime-decimal-numbers
   let key =
@@ -445,11 +448,18 @@ test "decode pem file" {
     #|N53L9QKBgQCZd0K6RFhhdJW+Eh7/aIk8m8Cho4Im5vFOFrn99e4HKYF5BJnoQp4p
     #|1QTLMs2C3hQXdJ49LTLp0xr77zPxNWUpoN4XBwqDWL0t0MYkRZFoCAG7Jy2Pgegv
     #|uOuIr6NHfdgGBgOTeucG+mPtADsLYurEQuUlfkl5hR7LgwF+3q8bHQ==
-  guard let [sequence] = (key.split("\n")
+  guard (key.split("\n")
     |> @codec.base64_decode
     |> X690::from_iter
-    |> Iter::collect)
-  guard let [
+    |> Iter::collect) is [sequence]
+  guard (sequence.content.iter()
+    |> X690::from_iter
+    |> Iter::map(fn {
+      { tag: Integer, construction: Primitive, class: Universal, content } =>
+        BigInt::from_octets(content)
+      _ => panic()
+    })
+    |> Iter::collect) is [
     version,
     modulus,
     public_exponent,
@@ -459,14 +469,7 @@ test "decode pem file" {
     exponent1,
     exponent2,
     coefficient,
-  ] = (sequence.content.iter()
-    |> X690::from_iter
-    |> Iter::map(fn {
-      { tag: Integer, construction: Primitive, class: Universal, content } =>
-        BigInt::from_octets(content)
-      _ => panic()
-    })
-    |> Iter::collect)
+  ]
   assert_eq!(modulus.to_octets().length() * 8, 2048)
   inspect!(version, content="0")
   inspect!(

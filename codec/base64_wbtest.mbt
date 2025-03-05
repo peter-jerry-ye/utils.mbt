@@ -1,3 +1,4 @@
+///|
 test "base64 encode" {
   fn test_str!(input : String, expected : String) {
     [@encoding.encode(UTF8, input)].iter()
@@ -14,13 +15,14 @@ test "base64 encode" {
   test_str!("a Ā 𐀀 文 🦄", "YSDEgCDwkICAIOaWhyDwn6aE")
 }
 
+///|
 test "base64 decode" {
   fn test_str!(expected : String, input : String) {
     let buffer = @buffer.new()
     [input].iter()
     |> base64_decode
     |> Iter::each(fn(b) { buffer.write_byte(b) })
-    @encoding.decode_strict(UTF8, buffer.contents()).to_string!()
+    @encoding.decoder(UTF8).decode!(buffer.contents())
     |> inspect!(content=expected)
   }
 

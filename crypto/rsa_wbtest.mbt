@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+///|
 test "rsa" {
   let metadata = "ewogICAgInR5cCI6IkpXVCIsCiAgICAiYWxnIjoiUlMyNTYiCn0"
-  @encoding.decode_strict(
-    UTF8,
+  @encoding.decoder(UTF8).decode!(
     [metadata].iter() |> @codec.base64_decode(url_safe=true) |> Bytes::from_iter,
-  ).to_string!()
+  )
   |> inspect!(
     content=
       #|{
@@ -27,10 +27,9 @@ test "rsa" {
     ,
   )
   let payload = "ewogICAgImlhdCI6MTcyNDY2NTI5OSwKICAgICJleHAiOjE3MjQ2NjU5NTksCiAgICAiaXNzIjoiMDEyMzQ1NiIKfQ"
-  @encoding.decode_strict(
-    UTF8,
+  @encoding.decoder(UTF8).decode!(
     [payload].iter() |> @codec.base64_decode(url_safe=true) |> Bytes::from_iter,
-  ).to_string!()
+  )
   |> inspect!(
     content=
       #|{
