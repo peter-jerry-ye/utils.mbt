@@ -1,0 +1,7 @@
+{
+  "import": [
+    "peter-jerry-ye/utils/codec",
+    "peter-jerry-ye/utils/crypto",
+    "moonbitlang/x/encoding"
+  ]
+}

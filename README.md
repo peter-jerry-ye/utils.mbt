@@ -1,1 +1,1 @@
-# [WIP] Personal Utils
+# [WIP] Utility library for MoonBit
