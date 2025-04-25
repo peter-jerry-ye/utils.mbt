@@ -451,7 +451,8 @@ test "decode pem file" {
   guard (key.split("\n")
     |> @codec.base64_decode
     |> X690::from_iter
-    |> Iter::collect) is [sequence]
+    |> Iter::collect)
+    is [sequence]
   guard (sequence.content.iter()
     |> X690::from_iter
     |> Iter::map(fn {
@@ -459,17 +460,18 @@ test "decode pem file" {
         BigInt::from_octets(content)
       _ => panic()
     })
-    |> Iter::collect) is [
-    version,
-    modulus,
-    public_exponent,
-    private_exponent,
-    prime1,
-    prime2,
-    exponent1,
-    exponent2,
-    coefficient,
-  ]
+    |> Iter::collect)
+    is [
+      version,
+      modulus,
+      public_exponent,
+      private_exponent,
+      prime1,
+      prime2,
+      exponent1,
+      exponent2,
+      coefficient,
+    ]
   assert_eq!(modulus.to_octets().length() * 8, 2048)
   inspect!(version, content="0")
   inspect!(

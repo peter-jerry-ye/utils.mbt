@@ -13,10 +13,7 @@
 // limitations under the License.
 
 ///| Create a token based on RSA256
-pub fn sign_rs256(
-  payload : Json,
-  private_key : String
-) -> String {
+pub fn sign_rs256(payload : Json, private_key : String) -> String {
   // Prepare signature
   guard (private_key
     .split("\n")

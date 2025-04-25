@@ -17,6 +17,7 @@ fn to_hex_digit(value : Int) -> Char {
   }
 }
 
+///|
 test {
   assert_eq!(to_hex_digit(0), '0')
   assert_eq!(to_hex_digit(1), '1')
@@ -89,6 +90,7 @@ pub fn uri_encode[T : CharSequence](
   result.to_string()
 }
 
+///|
 test {
   inspect!(
     uri_encode("http://example.com/ ~user"),
@@ -132,6 +134,7 @@ pub fn uri_decode[T : CharSequence](
   }
 }
 
+///|
 test {
   inspect!(
     uri_decode!("http%3A%2F%2Fexample.com%2F%20~user"),

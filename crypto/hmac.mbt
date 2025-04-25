@@ -32,6 +32,7 @@ pub fn hmac(
   hash.hash(opad + out.iter())
 }
 
+///|
 test "hmac" {
   inspect!(
     hmac(

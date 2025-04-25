@@ -8,6 +8,7 @@
 // MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 // See the Mulan PSL v2 for more details.
 
+///|
 test {
   let a = T::from_array([1, 2, 3])
   inspect!(a.next(), content="Some(1)")
@@ -26,6 +27,7 @@ test {
   inspect!(b.next(), content="Some(1)")
 }
 
+///|
 test {
   let a = T::from_array([1, 2, 3])
   inspect!(a.iter().collect(), content="[1, 2, 3]")
