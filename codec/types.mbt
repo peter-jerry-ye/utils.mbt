@@ -38,6 +38,8 @@ pub(open) trait CharSequence {
   iter(Self) -> Iter[Char]
 }
 
+pub impl CharSequence for @string.View with iter(self) { self.iter() }
+
 ///|
 pub impl CharSequence for String with iter(self) { self.iter() }
 

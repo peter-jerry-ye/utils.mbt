@@ -21,7 +21,7 @@ pub fn sign_rs256(
   guard (private_key
     .split("\n")
     .drop(1)
-    .take_while(fn(str) { not(str.starts_with("----END")) })
+    .take_while(fn(str) { not(str.has_prefix("----END")) })
     |> @codec.base64_decode
     |> @crypto.X690::from_iter
     |> Iter::collect)
