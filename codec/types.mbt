@@ -24,8 +24,8 @@ pub impl ByteSequence for Bytes with iter(self) {
 }
 
 ///|
-pub impl ByteSequence for @buffer.T with iter(self) {
-  self.iter()
+pub impl ByteSequence for @buffer.Buffer with iter(self) {
+  self.to_bytes().iter()
 }
 
 ///|

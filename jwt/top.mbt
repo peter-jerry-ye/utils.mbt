@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-///| Create a token based on RSA256
+///|
+/// Create a token based on RSA256
 pub fn sign_rs256(payload : Json, private_key : String) -> String {
   // Prepare signature
   guard (private_key
@@ -25,7 +26,7 @@ pub fn sign_rs256(payload : Json, private_key : String) -> String {
     is [sequence]
   guard (sequence.content.iter()
     |> @crypto.X690::from_iter
-    |> Iter::map(fn {
+    |> Iter::map(value => match value {
       { tag: Integer, construction: Primitive, class: Universal, content } =>
         BigInt::from_octets(content)
       _ => panic()
@@ -45,13 +46,13 @@ pub fn sign_rs256(payload : Json, private_key : String) -> String {
   let metadata = [
       @encoding.encode(
         UTF8,
-        ({ "alg": "RS256", "typ": "JWT" } : Json) |> @json.stringify,
+        ({ "alg": "RS256", "typ": "JWT" } : Json).stringify(),
       ),
     ].iter()
     |> @codec.base64_encode(url_safe=true)
     |> Iter::filter(fn(ch) { ch != '=' }) // omit as per rfc7515 section 2
     |> String::from_iter
-  let payload = [@encoding.encode(UTF8, payload |> @json.stringify)].iter()
+  let payload = [@encoding.encode(UTF8, payload.stringify())].iter()
     |> @codec.base64_encode(url_safe=true)
     |> Iter::filter(fn(ch) { ch != '=' }) // omit as per rfc7515 section 2
     |> String::from_iter

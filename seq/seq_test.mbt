@@ -11,26 +11,26 @@
 ///|
 test {
   let a = T::from_array([1, 2, 3])
-  inspect!(a.next(), content="Some(1)")
+  inspect(a.next(), content="Some(1)")
   if a.has_next() {
-    inspect!(a.next(), content="Some(2)")
+    inspect(a.next(), content="Some(2)")
   }
-  inspect!(a.next(), content="Some(3)")
+  inspect(a.next(), content="Some(3)")
   let b = Immut::from_array([1, 2, 3])
-  inspect!(b.next(), content="Some(1)")
+  inspect(b.next(), content="Some(1)")
   if b.has_next() {
-    inspect!(b.next(), content="Some(1)")
+    inspect(b.next(), content="Some(1)")
   }
-  inspect!(b.next(), content="Some(1)")
+  inspect(b.next(), content="Some(1)")
   let c = b.step()
-  inspect!(c.next(), content="Some(2)")
-  inspect!(b.next(), content="Some(1)")
+  inspect(c.next(), content="Some(2)")
+  inspect(b.next(), content="Some(1)")
 }
 
 ///|
 test {
   let a = T::from_array([1, 2, 3])
-  inspect!(a.iter().collect(), content="[1, 2, 3]")
+  inspect(a.iter().collect(), content="[1, 2, 3]")
   let b = Immut::from_array([1, 2, 3])
-  inspect!(b.iter().collect(), content="[1, 2, 3]")
+  inspect(b.iter().collect(), content="[1, 2, 3]")
 }

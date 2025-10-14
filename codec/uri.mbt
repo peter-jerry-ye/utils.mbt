@@ -11,30 +11,30 @@
 ///|
 fn to_hex_digit(value : Int) -> Char {
   match value {
-    0..=9 => Char::from_int(value + 48)
-    10..=15 => Char::from_int(value - 10 + 65)
+    0..=9 => Int::unsafe_to_char(value + 48)
+    10..=15 => Int::unsafe_to_char(value - 10 + 65)
     _ => panic()
   }
 }
 
 ///|
 test {
-  assert_eq!(to_hex_digit(0), '0')
-  assert_eq!(to_hex_digit(1), '1')
-  assert_eq!(to_hex_digit(2), '2')
-  assert_eq!(to_hex_digit(3), '3')
-  assert_eq!(to_hex_digit(4), '4')
-  assert_eq!(to_hex_digit(5), '5')
-  assert_eq!(to_hex_digit(6), '6')
-  assert_eq!(to_hex_digit(7), '7')
-  assert_eq!(to_hex_digit(8), '8')
-  assert_eq!(to_hex_digit(9), '9')
-  assert_eq!(to_hex_digit(10), 'A')
-  assert_eq!(to_hex_digit(11), 'B')
-  assert_eq!(to_hex_digit(12), 'C')
-  assert_eq!(to_hex_digit(13), 'D')
-  assert_eq!(to_hex_digit(14), 'E')
-  assert_eq!(to_hex_digit(15), 'F')
+  assert_eq(to_hex_digit(0), '0')
+  assert_eq(to_hex_digit(1), '1')
+  assert_eq(to_hex_digit(2), '2')
+  assert_eq(to_hex_digit(3), '3')
+  assert_eq(to_hex_digit(4), '4')
+  assert_eq(to_hex_digit(5), '5')
+  assert_eq(to_hex_digit(6), '6')
+  assert_eq(to_hex_digit(7), '7')
+  assert_eq(to_hex_digit(8), '8')
+  assert_eq(to_hex_digit(9), '9')
+  assert_eq(to_hex_digit(10), 'A')
+  assert_eq(to_hex_digit(11), 'B')
+  assert_eq(to_hex_digit(12), 'C')
+  assert_eq(to_hex_digit(13), 'D')
+  assert_eq(to_hex_digit(14), 'E')
+  assert_eq(to_hex_digit(15), 'F')
 }
 
 ///|
@@ -47,14 +47,14 @@ fn from_hex_digit(value : Char) -> Int {
   }
 }
 
-///| 
+///|
 /// Encode a string into a URI-encoded string based on RFC 3986.
 /// 
 /// The assumption is that the char sequence contains code points.
-pub fn uri_encode[T : CharSequence](
+pub fn[T : CharSequence] uri_encode(
   chars : T,
-  skip_gen_delims~ : Bool = false,
-  skip_sub_delims~ : Bool = false
+  skip_gen_delims? : Bool = false,
+  skip_sub_delims? : Bool = false,
 ) -> String {
   let result = StringBuilder::new()
   for ch in chars {
@@ -68,8 +68,8 @@ pub fn uri_encode[T : CharSequence](
           result.write_char(ch)
         } else {
           result.write_char('%')
-          result.write_char(ch.to_int() >> 4 |> to_hex_digit)
-          result.write_char(ch.to_int() & 0xF |> to_hex_digit)
+          result.write_char((ch.to_int() >> 4) |> to_hex_digit)
+          result.write_char((ch.to_int() & 0xF) |> to_hex_digit)
         }
       // sub-delims = "!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / ";" / "="
       '!' | '$' | '&' | '\'' | '(' | ')' | '*' | '+' | ',' | ';' | '=' =>
@@ -77,13 +77,13 @@ pub fn uri_encode[T : CharSequence](
           result.write_char(ch)
         } else {
           result.write_char('%')
-          result.write_char(ch.to_int() >> 4 |> to_hex_digit)
-          result.write_char(ch.to_int() & 0xF |> to_hex_digit)
+          result.write_char((ch.to_int() >> 4) |> to_hex_digit)
+          result.write_char((ch.to_int() & 0xF) |> to_hex_digit)
         }
       _ => {
         result.write_char('%')
-        result.write_char(ch.to_int() >> 4 |> to_hex_digit)
-        result.write_char(ch.to_int() & 0xF |> to_hex_digit)
+        result.write_char((ch.to_int() >> 4) |> to_hex_digit)
+        result.write_char((ch.to_int() & 0xF) |> to_hex_digit)
       }
     }
   }
@@ -92,17 +92,17 @@ pub fn uri_encode[T : CharSequence](
 
 ///|
 test {
-  inspect!(
+  inspect(
     uri_encode("http://example.com/ ~user"),
     content="http%3A%2F%2Fexample.com%2F%20~user",
   )
 }
 
 ///|
-pub fn uri_decode[T : CharSequence](
+pub fn[T : CharSequence] uri_decode(
   chars : T,
-  stream~ : Bool = false
-) -> String! {
+  stream? : Bool = false,
+) -> String raise {
   let mut buffer = 0
   let mut state = 0
   let result = StringBuilder::new()
@@ -119,7 +119,7 @@ pub fn uri_decode[T : CharSequence](
       }
       2 => {
         buffer = buffer | from_hex_digit(ch)
-        result.write_char(buffer |> Char::from_int())
+        result.write_char(buffer |> Int::unsafe_to_char())
         buffer = 0
         state = 0
       }
@@ -129,15 +129,15 @@ pub fn uri_decode[T : CharSequence](
     if state == 0 || stream {
       result.to_string()
     } else {
-      fail!("Invalid URI encoding")
+      fail("Invalid URI encoding")
     }
   }
 }
 
 ///|
 test {
-  inspect!(
-    uri_decode!("http%3A%2F%2Fexample.com%2F%20~user"),
+  inspect(
+    uri_decode("http%3A%2F%2Fexample.com%2F%20~user"),
     content="http://example.com/ ~user",
   )
 }

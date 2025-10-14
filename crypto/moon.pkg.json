@@ -1,7 +1,10 @@
 {
   "import": [
     "peter-jerry-ye/utils/codec",
-    "moonbitlang/x/crypto"
+    {
+      "path": "moonbitlang/x/crypto",
+      "alias": "xcrypto"
+    }
   ],
   "wbtest-import": [
     "moonbitlang/x/encoding"

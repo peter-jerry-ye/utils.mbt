@@ -15,11 +15,11 @@
 ///|
 fn index_to_char(index : Int, url_safe : Bool) -> Char {
   if index < 26 {
-    Char::from_int(index + 65)
+    Int::unsafe_to_char(index + 65)
   } else if index < 52 {
-    Char::from_int(index - 26 + 97)
+    Int::unsafe_to_char(index - 26 + 97)
   } else if index < 62 {
-    Char::from_int(index - 52 + 48)
+    Int::unsafe_to_char(index - 52 + 48)
   } else if index == 62 {
     if url_safe {
       '-'
@@ -67,11 +67,11 @@ pub fn Base64Encoder::new() -> Base64Encoder {
 }
 
 ///|
-pub fn Base64Encoder::encode[T : ByteSequence](
+pub fn[T : ByteSequence] Base64Encoder::encode(
   self : Base64Encoder,
   bytes : T,
-  url_safe~ : Bool = false,
-  padding~ : Bool = false
+  url_safe? : Bool = false,
+  padding? : Bool = false,
 ) -> Array[Char] {
   let result = Array::new()
   for byte in bytes {
@@ -114,10 +114,11 @@ pub fn Base64Encoder::encode[T : ByteSequence](
   result
 }
 
-///| Encode binary to ascii text following Base64 defined in RFC 4648
-pub fn base64_encode[T : ByteSequence](
+///|
+/// Encode binary to ascii text following Base64 defined in RFC 4648
+pub fn[T : ByteSequence] base64_encode(
   bytes : Iter[T],
-  url_safe~ : Bool = false
+  url_safe? : Bool = false,
 ) -> Iter[Char] {
   Iter::new(fn(f) {
     let state = Base64Encoder::new()
@@ -151,10 +152,10 @@ pub fn Base64Decoder::new() -> Base64Decoder {
 }
 
 ///|
-pub fn Base64Decoder::decode[T : CharSequence](
+pub fn[T : CharSequence] Base64Decoder::decode(
   self : Base64Decoder,
   input : T,
-  url_safe~ : Bool = false
+  url_safe? : Bool = false,
 ) -> Array[Byte] {
   let result = []
   for ch in input {
@@ -189,13 +190,13 @@ pub fn Base64Decoder::decode[T : CharSequence](
   result
 }
 
-///| 
+///|
 /// Decode ascii text to binary following Base64 defined in RFC 4648
 ///
 /// If the string is not padded correctly, an empty `Bytes` will be returned
-pub fn base64_decode[T : CharSequence](
+pub fn[T : CharSequence] base64_decode(
   input : Iter[T],
-  url_safe~ : Bool = false
+  url_safe? : Bool = false,
 ) -> Iter[Byte] {
   let state = Base64Decoder::new()
   Iter::new(fn(f) {

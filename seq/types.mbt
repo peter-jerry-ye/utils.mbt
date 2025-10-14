@@ -28,23 +28,21 @@ struct T[A] {
 /// Example:
 ///
 /// ```moonbit
-/// test "T::new" {
-///   let mut i = 0
-///   let seq = T::new(fn() {
-///     if i < 3 {
-///       i = i + 1
-///       Some(i)
-///     } else {
-///       None
-///     }
-///   })
-///   inspect!(seq.next(), content="Some(1)")
-///   inspect!(seq.next(), content="Some(2)")
-///   inspect!(seq.next(), content="Some(3)")
-///   inspect!(seq.next(), content="None")
-/// }
+/// let mut i = 0
+/// let seq = T::new(fn() {
+///   if i < 3 {
+///     i = i + 1
+///     Some(i)
+///   } else {
+///     None
+///   }
+/// })
+/// inspect(seq.next(), content="Some(1)")
+/// inspect(seq.next(), content="Some(2)")
+/// inspect(seq.next(), content="Some(3)")
+/// inspect(seq.next(), content="None")
 /// ```
-pub fn T::new[A](next : () -> A?) -> T[A] {
+pub fn[A] T::new(next : () -> A?) -> T[A] {
   { next, }
 }
 
@@ -62,15 +60,13 @@ pub fn T::new[A](next : () -> A?) -> T[A] {
 /// Example:
 ///
 /// ```moonbit
-/// test "T::next" {
-///   let seq = T::from_array([1, 2, 3])
-///   inspect!(seq.next(), content="Some(1)")
-///   inspect!(seq.next(), content="Some(2)")
-///   inspect!(seq.next(), content="Some(3)")
-///   inspect!(seq.next(), content="None")
-/// }
+/// let seq = T::from_array([1, 2, 3])
+/// inspect(seq.next(), content="Some(1)")
+/// inspect(seq.next(), content="Some(2)")
+/// inspect(seq.next(), content="Some(3)")
+/// inspect(seq.next(), content="None")
 /// ```
-pub fn T::next[A](self : T[A]) -> A? {
+pub fn[A] T::next(self : T[A]) -> A? {
   (self.next)()
 }
 
@@ -88,17 +84,15 @@ pub fn T::next[A](self : T[A]) -> A? {
 /// Example:
 ///
 /// ```moonbit
-/// test "T::has_next" {
-///   let seq = T::from_array([1, 2, 3])
-///   inspect!(seq.has_next(), content="true")
-///   let _ = seq.next()
-///   inspect!(seq.has_next(), content="true")
-///   let _ = seq.next()
-///   let _ = seq.next()
-///   inspect!(seq.has_next(), content="false")
-/// }
+/// let seq = T::from_array([1, 2, 3])
+/// inspect(seq.has_next(), content="true")
+/// let _ = seq.next()
+/// inspect(seq.has_next(), content="true")
+/// let _ = seq.next()
+/// let _ = seq.next()
+/// inspect(seq.has_next(), content="false")
 /// ```
-pub fn T::has_next[A](self : T[A]) -> Bool {
+pub fn[A] T::has_next(self : T[A]) -> Bool {
   let { next } = self
   let next_val = next()
   self.next = fn() -> A? {
@@ -120,15 +114,15 @@ pub fn T::has_next[A](self : T[A]) -> Bool {
 /// Example:
 ///
 /// ```moonbit
-/// test "T::iter" {
-///   let seq = T::from_array([1, 2, 3])
-///   let iter = seq.iter()
-///   let buf = @buffer.new()
-///   iter.each(fn(x) { buf.write_string(x.to_string()) })
-///   inspect!(buf.contents(), content="123")
-/// }
+/// let seq = T::from_array([1, 2, 3])
+/// let iter = seq.iter()
+/// let buf = @buffer.new()
+/// iter.each(fn(x) { buf.write_string(x.to_string()) })
+/// inspect(buf.contents(), content=(
+///   #|b"\x31\x00\x32\x00\x33\x00"
+/// ))
 /// ```
-pub fn T::iter[A](self : T[A]) -> Iter[A] {
+pub fn[A] T::iter(self : T[A]) -> Iter[A] {
   Iter::new(fn(visit) {
     loop self.next() {
       Some(value) => {
@@ -153,16 +147,14 @@ pub fn T::iter[A](self : T[A]) -> Iter[A] {
 /// Example:
 ///
 /// ```moonbit
-/// test "T::from_array" {
-///   let array = [1, 2, 3]
-///   let seq = T::from_array(array)
-///   inspect!(seq.next(), content="Some(1)")
-///   inspect!(seq.next(), content="Some(2)")
-///   inspect!(seq.next(), content="Some(3)")
-///   inspect!(seq.next(), content="None")
-/// }
+/// let array = [1, 2, 3]
+/// let seq = T::from_array(array)
+/// inspect(seq.next(), content="Some(1)")
+/// inspect(seq.next(), content="Some(2)")
+/// inspect(seq.next(), content="Some(3)")
+/// inspect(seq.next(), content="None")
 /// ```
-pub fn T::from_array[A](self : Array[A]) -> T[A] {
+pub fn[A] T::from_array(self : Array[A]) -> T[A] {
   let mut i = 0
   T::new(fn() {
     if i < self.length() {

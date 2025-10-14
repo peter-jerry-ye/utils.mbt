@@ -18,23 +18,23 @@
 pub fn hmac(
   content : Iter[Byte],
   hash~ : HashAlgorithm,
-  secret~ : Bytes
+  secret~ : Bytes,
 ) -> Bytes {
   // block length of the hash function
   // TODO: it may not be 64 for all hash algorithms
   let b = 64
   let k = if secret.length() > b { hash.hash(secret.iter()) } else { secret }
-  let ipad = k.iter() + Bytes::new(b - k.length()).iter()
+  let ipad = (k.iter() + Bytes::new(b - k.length()).iter())
     |> Iter::map(fn(i) { i ^ b'\x36' })
   let out = hash.hash(ipad + content)
-  let opad = k.iter() + Bytes::new(b - k.length()).iter()
+  let opad = (k.iter() + Bytes::new(b - k.length()).iter())
     |> Iter::map(fn(i) { i ^ b'\x5C' })
   hash.hash(opad + out.iter())
 }
 
 ///|
 test "hmac" {
-  inspect!(
+  inspect(
     hmac(
       b"I would like to buy 100 units.".iter(),
       hash=HashAlgorithm::MD5,
@@ -44,7 +44,7 @@ test "hmac" {
     |> BigInt::to_hex,
     content="76320C555FF8979F16DF9539E53D4B69",
   )
-  inspect!(
+  inspect(
     hmac(
       b"A quick brown fox jumps over the lazy dog".iter(),
       hash=HashAlgorithm::SHA224,
@@ -54,7 +54,7 @@ test "hmac" {
     |> BigInt::to_hex,
     content="870650B1A3FDB1318C93CCAFAC0F248DC356414E9FEADF5E0F268FCF",
   )
-  inspect!(
+  inspect(
     hmac(
       b"A quick brown fox jumps over the lazy dog".iter(),
       hash=HashAlgorithm::SHA256,

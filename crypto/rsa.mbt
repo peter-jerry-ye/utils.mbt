@@ -39,7 +39,7 @@ pub(all) enum RSAPrivKey {
 pub fn rsassa_pkcs1_v1_5_sign(
   bytes : Iter[Byte],
   priv_key : RSAPrivKey,
-  hash~ : HashAlgorithm = SHA256
+  hash? : HashAlgorithm = SHA256,
 ) -> BigInt {
   match priv_key {
     Pair(modulus~, exponent~, length~) => {
@@ -61,7 +61,10 @@ pub fn rsassa_pkcs1_v1_5_sign(
       let ss = [
           hex.pow(dP, modulus=p),
           hex.pow(dQ, modulus=q),
-          ..triplets.map(fn { (r, d, _) => hex.pow(d, modulus=r) }),
+          ..triplets.map(tuple => {
+            guard tuple is (r, d, _)
+            hex.pow(d, modulus=r)
+          }),
         ]
       let h = (ss[0] - ss[1]) * qInv % p
       let h = if h < 0 { h + p } else { h }
@@ -84,8 +87,8 @@ pub fn rsassa_pkcs1_v1_5_verify(
   modulus : BigInt,
   exponent : BigInt,
   signature : BigInt,
-  hash~ : HashAlgorithm = SHA256,
-  length~ : Int = 2048
+  hash? : HashAlgorithm = SHA256,
+  length? : Int = 2048,
 ) -> Bool {
   let padded = emsa_pkcs1_v1_5(bytes, length / 8, hash~)
   let number = BigInt::from_octets(padded)
@@ -97,7 +100,7 @@ pub fn rsassa_pkcs1_v1_5_verify(
 fn emsa_pkcs1_v1_5(
   message : Iter[Byte],
   emLen : Int,
-  hash~ : HashAlgorithm = SHA256
+  hash? : HashAlgorithm = SHA256,
 ) -> Bytes {
   let h = hash.hash(message)
   let digest_info : X690 = {
