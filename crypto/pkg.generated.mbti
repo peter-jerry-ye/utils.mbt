@@ -1,0 +1,107 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "peter-jerry-ye/utils/crypto"
+
+import(
+  "moonbitlang/core/bigint"
+)
+
+// Values
+fn hmac(Iter[Byte], hash~ : HashAlgorithm, secret~ : Bytes) -> Bytes
+
+fn oid_to_bytes(Array[Int]) -> Bytes
+
+fn rsassa_pkcs1_v1_5_sign(Iter[Byte], RSAPrivKey, hash? : HashAlgorithm) -> @bigint.BigInt
+
+fn rsassa_pkcs1_v1_5_verify(Iter[Byte], @bigint.BigInt, @bigint.BigInt, @bigint.BigInt, hash? : HashAlgorithm, length? : Int) -> Bool
+
+// Errors
+
+// Types and methods
+pub(all) enum HashAlgorithm {
+  MD5
+  SHA224
+  SHA256
+}
+fn HashAlgorithm::hash(Self, Iter[Byte]) -> Bytes
+fn HashAlgorithm::oid(Self) -> Array[Int]
+fn HashAlgorithm::oid_with_rsa_encryption(Self) -> Array[Int]
+fn HashAlgorithm::pkcs1_v1_5_digest_algorithms(Self) -> X690
+
+pub(all) enum RSAPrivKey {
+  Pair(modulus~ : @bigint.BigInt, exponent~ : @bigint.BigInt, length~ : Int)
+  Quintuple(factor1~ : @bigint.BigInt, factor2~ : @bigint.BigInt, exponent1~ : @bigint.BigInt, exponent2~ : @bigint.BigInt, coefficient~ : @bigint.BigInt, triplets~ : Array[(@bigint.BigInt, @bigint.BigInt, @bigint.BigInt)], length~ : Int)
+}
+
+pub(all) struct RSAPubKey {
+  modulus : @bigint.BigInt
+  exponent : @bigint.BigInt
+  length : Int
+}
+
+pub(all) struct X690 {
+  tag : X690Type
+  construction : X690Construction
+  class : X690Class
+  content : Bytes
+}
+fn X690::from_iter(Iter[Byte]) -> Iter[Self]
+fn X690::to_bytes(Self) -> Bytes
+impl Show for X690
+
+pub(all) enum X690Class {
+  Universal
+  Application
+  ContextSpecific
+  Private
+}
+impl Show for X690Class
+
+pub(all) enum X690Construction {
+  Primitive
+  Constructed
+}
+impl Show for X690Construction
+
+pub(all) enum X690Type {
+  Boolean
+  Integer
+  BitString
+  OctetString
+  Null
+  ObjectIdentifier
+  ObjectDescriptor
+  External
+  Real
+  Enumerated
+  EmbeddedPDV
+  UTF8String
+  RelativeOID
+  Time
+  Sequence
+  Set
+  NumericString
+  PrintableString
+  TeletexString
+  VideotexString
+  IA5String
+  UTCTime
+  GeneralizedTime
+  GraphicString
+  VisibleString
+  GeneralString
+  UniversalString
+  CharacterString
+  BMPString
+  Date
+  TimeOfDay
+  DateTime
+  Duration
+  OID_IRI
+  Relative_OID_IRI
+}
+impl Show for X690Type
+
+// Type aliases
+
+// Traits
+

@@ -265,7 +265,7 @@ pub fn oid_to_bytes(tree : Array[Int]) -> Bytes {
 
 ///|
 /// Assuming length is definite
-pub fn to_bytes(self : X690) -> Bytes {
+pub fn X690::to_bytes(self : X690) -> Bytes {
   let buffer = @buffer.new()
   if self.tag.to_int() < 30 {
     buffer.write_byte(

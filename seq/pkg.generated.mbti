@@ -1,0 +1,28 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "peter-jerry-ye/utils/seq"
+
+// Values
+
+// Errors
+
+// Types and methods
+type Immut[A]
+fn[A] Immut::empty() -> Self[A]
+fn[A] Immut::from_array(Array[A]) -> Self[A]
+fn[A] Immut::has_next(Self[A]) -> Bool
+fn[A] Immut::iter(Self[A]) -> Iter[A]
+fn[A] Immut::new(() -> (A?, Self[A])) -> Self[A]
+fn[A] Immut::next(Self[A]) -> A?
+fn[A] Immut::step(Self[A]) -> Self[A]
+
+type T[A]
+fn[A] T::from_array(Array[A]) -> Self[A]
+fn[A] T::has_next(Self[A]) -> Bool
+fn[A] T::iter(Self[A]) -> Iter[A]
+fn[A] T::new(() -> A?) -> Self[A]
+fn[A] T::next(Self[A]) -> A?
+
+// Type aliases
+
+// Traits
+

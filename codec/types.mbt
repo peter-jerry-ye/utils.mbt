@@ -49,7 +49,7 @@ pub(open) trait CharSequence {
 }
 
 ///|
-pub impl CharSequence for @string.View with iter(self) {
+pub impl CharSequence for StringView with iter(self) {
   self.iter()
 }
 
@@ -61,9 +61,4 @@ pub impl CharSequence for String with iter(self) {
 ///|
 pub impl CharSequence for Iter[Char] with iter(self) {
   self
-}
-
-///|
-fn &CharSequence::empty() -> Iter[Char] {
-  Iter::empty()
 }

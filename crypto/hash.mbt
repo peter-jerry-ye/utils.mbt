@@ -20,7 +20,7 @@ pub(all) enum HashAlgorithm {
 }
 
 ///|
-pub fn oid(self : HashAlgorithm) -> Array[Int] {
+pub fn HashAlgorithm::oid(self : HashAlgorithm) -> Array[Int] {
   match self {
     MD5 => [1, 2, 840, 113549, 2, 5]
     SHA224 => [2, 16, 840, 1, 101, 3, 4, 2, 4]
@@ -29,7 +29,9 @@ pub fn oid(self : HashAlgorithm) -> Array[Int] {
 }
 
 ///|
-pub fn oid_with_rsa_encryption(self : HashAlgorithm) -> Array[Int] {
+pub fn HashAlgorithm::oid_with_rsa_encryption(
+  self : HashAlgorithm,
+) -> Array[Int] {
   let pkcs_1 = [1, 2, 840, 113549, 1, 1]
   match self {
     MD5 => [..pkcs_1, 4]
@@ -39,7 +41,7 @@ pub fn oid_with_rsa_encryption(self : HashAlgorithm) -> Array[Int] {
 }
 
 ///|
-pub fn hash(self : HashAlgorithm, input : Iter[Byte]) -> Bytes {
+pub fn HashAlgorithm::hash(self : HashAlgorithm, input : Iter[Byte]) -> Bytes {
   match self {
     MD5 => @xcrypto.md5(FixedArray::from_iter(input)) |> Bytes::from_fixedarray
     SHA224 => @xcrypto.sha224_from_iter(input) |> Bytes::from_fixedarray
@@ -48,7 +50,9 @@ pub fn hash(self : HashAlgorithm, input : Iter[Byte]) -> Bytes {
 }
 
 ///|
-pub fn pkcs1_v1_5_digest_algorithms(self : HashAlgorithm) -> X690 {
+pub fn HashAlgorithm::pkcs1_v1_5_digest_algorithms(
+  self : HashAlgorithm,
+) -> X690 {
   {
     tag: Sequence,
     class: Universal,

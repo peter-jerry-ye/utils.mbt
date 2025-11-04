@@ -1,0 +1,46 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "peter-jerry-ye/utils/codec"
+
+import(
+  "moonbitlang/core/buffer"
+)
+
+// Values
+fn[T : CharSequence] base64_decode(Iter[T], url_safe? : Bool) -> Iter[Byte]
+
+fn[T : ByteSequence] base64_encode(Iter[T], url_safe? : Bool) -> Iter[Char]
+
+fn[T : CharSequence] uri_decode(T, stream? : Bool) -> String raise
+
+fn[T : CharSequence] uri_encode(T, skip_gen_delims? : Bool, skip_sub_delims? : Bool) -> String
+
+// Errors
+
+// Types and methods
+type Base64Decoder
+fn[T : CharSequence] Base64Decoder::decode(Self, T, url_safe? : Bool) -> Array[Byte]
+fn Base64Decoder::new() -> Self
+
+type Base64Encoder
+fn[T : ByteSequence] Base64Encoder::encode(Self, T, url_safe? : Bool, padding? : Bool) -> Array[Char]
+fn Base64Encoder::new() -> Self
+
+// Type aliases
+
+// Traits
+pub(open) trait ByteSequence {
+  iter(Self) -> Iter[Byte]
+}
+impl ByteSequence for FixedArray[Byte]
+impl ByteSequence for Bytes
+impl ByteSequence for @buffer.Buffer
+impl ByteSequence for Array[Byte]
+impl ByteSequence for Iter[Byte]
+
+pub(open) trait CharSequence {
+  iter(Self) -> Iter[Char]
+}
+impl CharSequence for String
+impl CharSequence for Iter[Char]
+impl CharSequence for StringView
+

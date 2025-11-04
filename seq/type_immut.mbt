@@ -57,7 +57,7 @@ pub fn[A] Immut::new(next : () -> (A?, Immut[A])) -> Immut[A] {
 /// inspect(seq.next(), content="Some(1)") // Same value since state is preserved
 /// ```
 pub fn[A] Immut::next(self : Immut[A]) -> A? {
-  self.inner()().0
+  self().0
 }
 
 ///|
@@ -82,7 +82,7 @@ pub fn[A] Immut::next(self : Immut[A]) -> A? {
 /// inspect(seq.next(), content="Some(1)") // Original sequence unchanged
 /// ```
 pub fn[A] Immut::step(self : Immut[A]) -> Immut[A] {
-  self.inner()().1
+  self().1
 }
 
 ///|
@@ -107,17 +107,17 @@ pub fn[A] Immut::step(self : Immut[A]) -> Immut[A] {
 /// inspect(seq.has_next(), content="true") // State is preserved
 /// ```
 pub fn[A] Immut::has_next(self : Immut[A]) -> Bool {
-  let (next_val, _) = self.inner()()
+  let (next_val, _) = self()
   not(next_val.is_empty())
 }
 
 ///|
 pub fn[A] Immut::iter(self : Immut[A]) -> Iter[A] {
   Iter::new(fn(visit) {
-    loop self.inner()() {
+    loop self() {
       (Some(val), next) => {
         guard IterContinue == visit(val) else { return IterEnd }
-        continue next.inner()()
+        continue next()
       }
       (None, _) => IterContinue
     }
