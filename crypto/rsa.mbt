@@ -59,13 +59,13 @@ pub fn rsassa_pkcs1_v1_5_sign(
       let padded = emsa_pkcs1_v1_5(bytes, length / 8, hash~)
       let hex = BigInt::from_octets(padded)
       let ss = [
-          hex.pow(dP, modulus=p),
-          hex.pow(dQ, modulus=q),
-          ..triplets.map(tuple => {
-            guard tuple is (r, d, _)
-            hex.pow(d, modulus=r)
-          }),
-        ]
+        hex.pow(dP, modulus=p),
+        hex.pow(dQ, modulus=q),
+        ..triplets.map(tuple => {
+          guard tuple is (r, d, _)
+          hex.pow(d, modulus=r)
+        }),
+      ]
       let h = (ss[0] - ss[1]) * qInv % p
       let h = if h < 0 { h + p } else { h }
       let mut s = ss[1] + q * h
@@ -132,5 +132,5 @@ fn emsa_pkcs1_v1_5(
   em[1] = b'\x01'
   ps.blit_to(em, len=emLen - tLen - 3, dst_offset=2)
   em.blit_from_bytes(emLen - tLen, t, 0, tLen)
-  Bytes::from_fixedarray(em)
+  Bytes::from_array(em)
 }
