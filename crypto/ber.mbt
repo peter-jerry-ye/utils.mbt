@@ -29,30 +29,10 @@ pub(all) enum X690Class {
 } derive(Show)
 
 ///|
-fn X690Construction::from_int(value : Int) -> X690Construction {
-  match value {
-    0 => Primitive
-    1 => Constructed
-    _ => panic()
-  }
-}
-
-///|
 fn X690Construction::to_int(self : X690Construction) -> Int {
   match self {
     Primitive => 0
     Constructed => 1
-  }
-}
-
-///|
-fn X690Class::from_int(value : Int) -> X690Class {
-  match value {
-    0 => Universal
-    1 => Application
-    2 => ContextSpecific
-    3 => Private
-    _ => panic()
   }
 }
 
@@ -239,7 +219,7 @@ test "variable length encoding" {
   inspect(
     buffer.to_bytes(),
     content=(
-      #|b"\x82\x37"
+      #|b"\x827"
     ),
   )
   let buffer = @buffer.new()
@@ -247,7 +227,7 @@ test "variable length encoding" {
   inspect(
     buffer.to_bytes(),
     content=(
-      #|b"\x32"
+      #|b"2"
     ),
   )
 }
@@ -311,7 +291,7 @@ test "OID and x690 to bytes" {
   inspect(
     pkcs_1.to_bytes(),
     content=(
-      #|b"\x06\x08\x2a\x86\x48\x86\xf7\x0d\x01\x01"
+      #|b"\x06\x08*\x86H\x86\xf7\x0d\x01\x01"
     ),
   )
 }

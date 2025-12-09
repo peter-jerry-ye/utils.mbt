@@ -6,24 +6,24 @@ import(
 )
 
 // Values
-fn[T : CharSequence] base64_decode(Iter[T], url_safe? : Bool) -> Iter[Byte]
+pub fn[T : CharSequence] base64_decode(Iter[T], url_safe? : Bool) -> Iter[Byte]
 
-fn[T : ByteSequence] base64_encode(Iter[T], url_safe? : Bool) -> Iter[Char]
+pub fn[T : ByteSequence] base64_encode(Iter[T], url_safe? : Bool) -> Iter[Char]
 
-fn[T : CharSequence] uri_decode(T, stream? : Bool) -> String raise
+pub fn[T : CharSequence] uri_decode(T, stream? : Bool) -> String raise
 
-fn[T : CharSequence] uri_encode(T, skip_gen_delims? : Bool, skip_sub_delims? : Bool) -> String
+pub fn[T : CharSequence] uri_encode(T, skip_gen_delims? : Bool, skip_sub_delims? : Bool) -> String
 
 // Errors
 
 // Types and methods
 type Base64Decoder
-fn[T : CharSequence] Base64Decoder::decode(Self, T, url_safe? : Bool) -> Array[Byte]
-fn Base64Decoder::new() -> Self
+pub fn[T : CharSequence] Base64Decoder::decode(Self, T, url_safe? : Bool) -> Array[Byte]
+pub fn Base64Decoder::new() -> Self
 
 type Base64Encoder
-fn[T : ByteSequence] Base64Encoder::encode(Self, T, url_safe? : Bool, padding? : Bool) -> Array[Char]
-fn Base64Encoder::new() -> Self
+pub fn[T : ByteSequence] Base64Encoder::encode(Self, T, url_safe? : Bool, padding? : Bool) -> Array[Char]
+pub fn Base64Encoder::new() -> Self
 
 // Type aliases
 
@@ -31,16 +31,16 @@ fn Base64Encoder::new() -> Self
 pub(open) trait ByteSequence {
   iter(Self) -> Iter[Byte]
 }
-impl ByteSequence for FixedArray[Byte]
-impl ByteSequence for Bytes
-impl ByteSequence for @buffer.Buffer
-impl ByteSequence for Array[Byte]
-impl ByteSequence for Iter[Byte]
+pub impl ByteSequence for FixedArray[Byte]
+pub impl ByteSequence for Bytes
+pub impl ByteSequence for @buffer.Buffer
+pub impl ByteSequence for Array[Byte]
+pub impl ByteSequence for Iter[Byte]
 
 pub(open) trait CharSequence {
   iter(Self) -> Iter[Char]
 }
-impl CharSequence for String
-impl CharSequence for Iter[Char]
-impl CharSequence for StringView
+pub impl CharSequence for String
+pub impl CharSequence for Iter[Char]
+pub impl CharSequence for StringView
 

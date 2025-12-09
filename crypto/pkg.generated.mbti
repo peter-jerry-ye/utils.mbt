@@ -6,13 +6,13 @@ import(
 )
 
 // Values
-fn hmac(Iter[Byte], hash~ : HashAlgorithm, secret~ : Bytes) -> Bytes
+pub fn hmac(Iter[Byte], hash~ : HashAlgorithm, secret~ : Bytes) -> Bytes
 
-fn oid_to_bytes(Array[Int]) -> Bytes
+pub fn oid_to_bytes(Array[Int]) -> Bytes
 
-fn rsassa_pkcs1_v1_5_sign(Iter[Byte], RSAPrivKey, hash? : HashAlgorithm) -> @bigint.BigInt
+pub fn rsassa_pkcs1_v1_5_sign(Iter[Byte], RSAPrivKey, hash? : HashAlgorithm) -> @bigint.BigInt
 
-fn rsassa_pkcs1_v1_5_verify(Iter[Byte], @bigint.BigInt, @bigint.BigInt, @bigint.BigInt, hash? : HashAlgorithm, length? : Int) -> Bool
+pub fn rsassa_pkcs1_v1_5_verify(Iter[Byte], @bigint.BigInt, @bigint.BigInt, @bigint.BigInt, hash? : HashAlgorithm, length? : Int) -> Bool
 
 // Errors
 
@@ -22,10 +22,10 @@ pub(all) enum HashAlgorithm {
   SHA224
   SHA256
 }
-fn HashAlgorithm::hash(Self, Iter[Byte]) -> Bytes
-fn HashAlgorithm::oid(Self) -> Array[Int]
-fn HashAlgorithm::oid_with_rsa_encryption(Self) -> Array[Int]
-fn HashAlgorithm::pkcs1_v1_5_digest_algorithms(Self) -> X690
+pub fn HashAlgorithm::hash(Self, Iter[Byte]) -> Bytes
+pub fn HashAlgorithm::oid(Self) -> Array[Int]
+pub fn HashAlgorithm::oid_with_rsa_encryption(Self) -> Array[Int]
+pub fn HashAlgorithm::pkcs1_v1_5_digest_algorithms(Self) -> X690
 
 pub(all) enum RSAPrivKey {
   Pair(modulus~ : @bigint.BigInt, exponent~ : @bigint.BigInt, length~ : Int)
@@ -44,9 +44,9 @@ pub(all) struct X690 {
   class : X690Class
   content : Bytes
 }
-fn X690::from_iter(Iter[Byte]) -> Iter[Self]
-fn X690::to_bytes(Self) -> Bytes
-impl Show for X690
+pub fn X690::from_iter(Iter[Byte]) -> Iter[Self]
+pub fn X690::to_bytes(Self) -> Bytes
+pub impl Show for X690
 
 pub(all) enum X690Class {
   Universal
@@ -54,13 +54,13 @@ pub(all) enum X690Class {
   ContextSpecific
   Private
 }
-impl Show for X690Class
+pub impl Show for X690Class
 
 pub(all) enum X690Construction {
   Primitive
   Constructed
 }
-impl Show for X690Construction
+pub impl Show for X690Construction
 
 pub(all) enum X690Type {
   Boolean
@@ -99,7 +99,7 @@ pub(all) enum X690Type {
   OID_IRI
   Relative_OID_IRI
 }
-impl Show for X690Type
+pub impl Show for X690Type
 
 // Type aliases
 
