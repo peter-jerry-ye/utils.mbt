@@ -2,7 +2,7 @@
 package "peter-jerry-ye/utils/jwt"
 
 // Values
-fn sign_rs256(Json, String) -> String
+pub fn sign_rs256(Json, String) -> String
 
 // Errors
 

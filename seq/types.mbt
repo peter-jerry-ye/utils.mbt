@@ -99,7 +99,7 @@ pub fn[A] T::has_next(self : T[A]) -> Bool {
     self.next = next
     return next_val
   }
-  not(next_val.is_empty())
+  next_val is Some(_)
 }
 
 ///|

@@ -108,7 +108,7 @@ pub fn[A] Immut::step(self : Immut[A]) -> Immut[A] {
 /// ```
 pub fn[A] Immut::has_next(self : Immut[A]) -> Bool {
   let (next_val, _) = self()
-  not(next_val.is_empty())
+  next_val is Some(_)
 }
 
 ///|
